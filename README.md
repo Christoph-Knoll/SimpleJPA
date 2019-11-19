@@ -1,2 +1,2 @@
 # SimpleJPA
-JPA-Projectd used in DBI lessons.
+JPA-Project used in DBI lessons.
