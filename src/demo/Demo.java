@@ -30,7 +30,7 @@ public class Demo {
         Query awesomeCities = em.createQuery("select distinct a.city from Person p join p.addresses a where p.isAwesome = true order by a.city asc");
         List<String> res1 = awesomeCities.getResultList();
 
-        Query awesomePeoples = em.createQuery("select new demo.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
+        Query awesomePeoples = em.createQuery("select new demo.dto.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
         List<AwesomePeopleCount> res2 = awesomePeoples.getResultList();
 
         em.close();
