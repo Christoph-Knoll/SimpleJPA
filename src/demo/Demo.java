@@ -1,5 +1,9 @@
 package demo;
 
+import demo.dto.AwesomePeopleCount;
+import demo.entities.Address;
+import demo.entities.Person;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

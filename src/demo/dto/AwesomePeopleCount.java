@@ -1,4 +1,4 @@
-package demo;
+package demo.dto;
 
 public class AwesomePeopleCount {
     //region Fields

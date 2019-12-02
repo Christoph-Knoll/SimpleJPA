@@ -1,4 +1,6 @@
-package demo;
+package demo.entities;
+
+import demo.entities.Address;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

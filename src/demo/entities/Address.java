@@ -1,8 +1,7 @@
-package demo;
+package demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Address implements Serializable
