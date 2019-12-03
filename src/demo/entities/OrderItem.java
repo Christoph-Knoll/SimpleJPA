@@ -7,11 +7,14 @@ import java.io.Serializable;
 @Table(name = "order_item")
 public class OrderItem {
 
+    //region Fields
     @Id
     private OrderItemId id;
 
     private Integer amount;
+    //endregion
 
+    //region Constructors
     public OrderItem(Order order, Product product, Integer amount) {
         id = new OrderItemId(order, product);
         this.amount = amount;
@@ -20,8 +23,9 @@ public class OrderItem {
     public OrderItem() {
         id = new OrderItemId();
     }
+    //endregion
 
-
+    //region Props
     public OrderItemId getId() {
         return id;
     }
@@ -37,10 +41,12 @@ public class OrderItem {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+    //endregion
 }
 
 @Embeddable
 class OrderItemId implements Serializable {
+    //region Fields
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -48,6 +54,7 @@ class OrderItemId implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    //endregion
 
     //region Constructors
     public OrderItemId(Order order, Product product) {
@@ -60,7 +67,6 @@ class OrderItemId implements Serializable {
     //endregion
 
     //region Props
-
     public Order getOrder() {
         return order;
     }

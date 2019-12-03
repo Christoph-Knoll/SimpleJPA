@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity
 public class Product {
+    //region Fields
     public String description;
     public Double price;
     @Id
@@ -14,7 +15,9 @@ public class Product {
     private int id;
     @OneToMany(mappedBy = "id.product", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<OrderItem>();
+    //endregion
 
+    //region Constructors
     public Product(String description, Double price) {
         this.description = description;
         this.price = price;
@@ -23,7 +26,9 @@ public class Product {
     public Product() {
 
     }
+    //endregion
 
+    //region Props
     public int getId() {
         return id;
     }
@@ -55,4 +60,5 @@ public class Product {
     public void setPrice(Double price) {
         this.price = price;
     }
+    //endregion
 }

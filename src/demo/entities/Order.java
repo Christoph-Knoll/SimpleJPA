@@ -5,14 +5,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// It is necessary to set the table-name to "order" because order itself is a command in posgresql
 @Table(name = "\"order\"")
 @Entity
 public class Order {
+    //region Fields
     @Id
     @Column(name = "order_id", nullable = false)
     @GeneratedValue
     private int id;
-
 
     @ManyToOne()
     @JoinColumns({
@@ -26,7 +27,9 @@ public class Order {
 
     private LocalDate orderDate;
     private Integer orderState;
+    //endregion
 
+    //region Constructors
     public Order(Address address, LocalDate orderDate, Integer orderState) {
         this.address = address;
         this.orderDate = orderDate;
@@ -35,7 +38,9 @@ public class Order {
 
     public Order() {
     }
+    //endregion
 
+    //region Methods
     public void addProduct(Product product, Integer amount) {
         items.add(new OrderItem(this, product, amount));
     }
@@ -43,7 +48,9 @@ public class Order {
     public void addOrderItem(OrderItem item) {
         items.add(item);
     }
+    //endregion
 
+    //region Props
     public int getId() {
         return id;
     }
@@ -75,12 +82,6 @@ public class Order {
     public void setOrderState(Integer orderState) {
         this.orderState = orderState;
     }
+    //endregion
 
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
-    }
 }
