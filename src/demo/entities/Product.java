@@ -6,16 +6,14 @@ import java.util.List;
 
 @Entity
 public class Product {
-    @Id
-    @Column(name = "product_id")
-    @GeneratedValue
-    private Integer id;
-
-    @OneToMany(mappedBy = "id.product", cascade = CascadeType.PERSIST)
-    private List<OrderItem> items = new ArrayList<OrderItem>();
-
     public String description;
     public Double price;
+    @Id
+    @Column(name = "product_id", nullable = false)
+    @GeneratedValue
+    private int id;
+    @OneToMany(mappedBy = "id.product", cascade = CascadeType.ALL)
+    private List<OrderItem> items = new ArrayList<OrderItem>();
 
     public Product(String description, Double price) {
         this.description = description;
@@ -26,12 +24,12 @@ public class Product {
 
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public Integer getId() {
-        return id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<OrderItem> getItems() {

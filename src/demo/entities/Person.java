@@ -1,7 +1,5 @@
 package demo.entities;
 
-import demo.entities.Address;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +21,7 @@ public class Person {
     private Double awesomeness;
     private BigDecimal wealth;
 
-    @OneToMany(mappedBy = "id.person", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "id.person", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
     //endregion
 
@@ -49,10 +47,6 @@ public class Person {
 
     public void setSSN(String sSN) {
         this.SSN = sSN;
-    }
-
-    public void setAwesomeness(Double awesomeness) {
-        this.awesomeness = awesomeness;
     }
 
     public void addAddress(String city, String country, String street, int streetNumber) {
@@ -101,6 +95,10 @@ public class Person {
 
     public double getAwesomeness() {
         return awesomeness;
+    }
+
+    public void setAwesomeness(Double awesomeness) {
+        this.awesomeness = awesomeness;
     }
 
     public void setAwesomeness(double awesomeness) {

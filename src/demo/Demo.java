@@ -13,7 +13,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 public class Demo {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("PersonPU");
         EntityManager em = factory.createEntityManager();
 
@@ -21,7 +21,7 @@ public class Demo {
         insertPerson(em);
         insertAwesomePerson(em);
         insertAddress(em);
-        //insertOrders(em);
+        insertOrders(em);
         // fetch Data
         Query query = em.createQuery("select p from Person p");
         List<Person> result = query.getResultList();
@@ -39,14 +39,14 @@ public class Demo {
         System.out.println("\u001B[34m");
 
         System.out.println("Persons:");
-        for (Person p : result){
+        for (Person p : result) {
             System.out.println(p.getSSN() + ": " + p.getFirstName() + " " + p.getLastName());
         }
         System.out.println();
 
         System.out.println("Awesome Cities:");
-        for (String c : res1){
-            System.out.println("\t--> " +c);
+        for (String c : res1) {
+            System.out.println("\t--> " + c);
         }
         System.out.println();
 
@@ -56,13 +56,13 @@ public class Demo {
 
     }
 
-    private static void insertPerson(EntityManager em ){
+    private static void insertPerson(EntityManager em) {
         em.getTransaction().begin();
         Person newPerson = new Person();
         newPerson.setSSN("5555050670");
         newPerson.setFirstName("Java");
         newPerson.setLastName("Student");
-        newPerson.setDateOfBirth(Date.from(LocalDate.of(1970,6,5).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        newPerson.setDateOfBirth(Date.from(LocalDate.of(1970, 6, 5).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         newPerson.setAwesome(false);
         newPerson.setAwesomeness(-8.12);
 
@@ -70,22 +70,22 @@ public class Demo {
         em.getTransaction().commit();
     }
 
-    private static void insertAwesomePerson(EntityManager em){
+    private static void insertAwesomePerson(EntityManager em) {
         em.getTransaction().begin();
 
         Person newPerson = new Person();
         newPerson.setSSN("314159");
         newPerson.setFirstName("David");
         newPerson.setLastName("Getter");
-        newPerson.setDateOfBirth(Date.from(LocalDate.of(1967,11,7).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        newPerson.setDateOfBirth(Date.from(LocalDate.of(1967, 11, 7).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         newPerson.setAwesome(true);
         newPerson.setAwesomeness(10);
-        newPerson.addAddress("Paris", "France", "Getterstreet",1);
+        newPerson.addAddress("Paris", "France", "Getterstreet", 1);
         em.persist(newPerson);
         em.getTransaction().commit();
     }
 
-    private static void insertAddress(EntityManager em){
+    private static void insertAddress(EntityManager em) {
         // fetch Java Student
         em.getTransaction().begin();
         Query query = em.createQuery("select p from Person p where p.firstName = 'Java'");
@@ -101,15 +101,27 @@ public class Demo {
         em.getTransaction().commit();
     }
 
-    private static void insertOrders(EntityManager em){
-        em.getTransaction().begin();
+    private static void insertOrders(EntityManager em) {
         Query query = em.createQuery("select a from demo.entities.Address a where a.street like 'Getterstreet'");
-        Address address = (Address)query.getSingleResult();
-        //System.out.println(address.getId().getId());
+        Address address = (Address) query.getSingleResult();
+
+        // Insert orders to set their state to make them "Managed" objects
+        // Need to be persisted before order because id would be the same.
+        em.getTransaction().begin();
+        Product product1 = new Product("Coffe", 2.0);
+        Product product2 = new Product("Tea", .75);
+
+        em.persist(product1);
+        em.persist(product2);
+        em.getTransaction().commit();
+
+        // Create order, add products and persist
+        em.getTransaction().begin();
         Order order = new Order(address, LocalDate.now(), 0);
-        order.addProduct(new Product("Coffe", 2.0), 999);
-        order.addProduct(new Product("Tea", .75), 3);
+        order.addProduct(product1, 999);
+        order.addProduct(product2, 3);
         em.persist(order);
         em.getTransaction().commit();
+
     }
 }

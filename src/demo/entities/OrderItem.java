@@ -2,8 +2,6 @@ package demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "order_item")
@@ -14,11 +12,12 @@ public class OrderItem {
 
     private Integer amount;
 
-    public OrderItem(Order order, Product product, Integer amount){
+    public OrderItem(Order order, Product product, Integer amount) {
         id = new OrderItemId(order, product);
         this.amount = amount;
     }
-    public OrderItem(){
+
+    public OrderItem() {
         id = new OrderItemId();
     }
 

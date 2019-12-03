@@ -12,7 +12,7 @@ public class AwesomePeopleCount {
         this.count = count;
     }
 
-    public AwesomePeopleCount(){
+    public AwesomePeopleCount() {
 
     }
     //endregion

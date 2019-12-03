@@ -5,23 +5,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name="\"order\"")
+@Table(name = "\"order\"")
 @Entity
 public class Order {
     @Id
-    @Column(name = "order_id")
+    @Column(name = "order_id", nullable = false)
     @GeneratedValue
-    private Short id;
+    private int id;
 
 
     @ManyToOne()
     @JoinColumns({
-            @JoinColumn(name = "id.ssn"),
-            @JoinColumn(name = "id.address_id")
+            @JoinColumn(name = "address_no"),
+            @JoinColumn(name = "ssn")
     })
     private Address address;
 
-    @OneToMany(mappedBy = "id.order", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "id.order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<OrderItem>();
 
     private LocalDate orderDate;
@@ -40,12 +40,16 @@ public class Order {
         items.add(new OrderItem(this, product, amount));
     }
 
-    public void setId(Short id) {
-        this.id = id;
+    public void addOrderItem(OrderItem item) {
+        items.add(item);
     }
 
-    public Short getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Address getAddress() {
