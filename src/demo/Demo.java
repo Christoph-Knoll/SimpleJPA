@@ -1,8 +1,7 @@
 package demo;
 
 import demo.dto.AwesomePeopleCount;
-import demo.entities.Address;
-import demo.entities.Person;
+import demo.entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,7 +21,7 @@ public class Demo {
         insertPerson(em);
         insertAwesomePerson(em);
         insertAddress(em);
-
+        //insertOrders(em);
         // fetch Data
         Query query = em.createQuery("select p from Person p");
         List<Person> result = query.getResultList();
@@ -99,6 +98,18 @@ public class Demo {
         studentAddress.setStreet("Hauptstraße");
         studentAddress.setStreetNumber(5);
         em.persist(studentAddress);
+        em.getTransaction().commit();
+    }
+
+    private static void insertOrders(EntityManager em){
+        em.getTransaction().begin();
+        Query query = em.createQuery("select a from demo.entities.Address a where a.street like 'Getterstreet'");
+        Address address = (Address)query.getSingleResult();
+        //System.out.println(address.getId().getId());
+        Order order = new Order(address, LocalDate.now(), 0);
+        order.addProduct(new Product("Coffe", 2.0), 999);
+        order.addProduct(new Product("Tea", .75), 3);
+        em.persist(order);
         em.getTransaction().commit();
     }
 }

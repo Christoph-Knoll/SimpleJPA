@@ -14,6 +14,15 @@ public class OrderItem {
 
     private Integer amount;
 
+    public OrderItem(Order order, Product product, Integer amount){
+        id = new OrderItemId(order, product);
+        this.amount = amount;
+    }
+    public OrderItem(){
+        id = new OrderItemId();
+    }
+
+
     public OrderItemId getId() {
         return id;
     }

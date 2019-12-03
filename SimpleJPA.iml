@@ -6,7 +6,6 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="NewPersistenceUnit" />
           <factory-entry name="PersonPU" value="c9494676-335c-4263-a2d5-1f177b8b0a10" />
         </datasource-mapping>
         <naming-strategy-map>

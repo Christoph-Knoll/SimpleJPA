@@ -53,7 +53,7 @@ create table first_steps.order
 		constraint order_pk
 			primary key,
 	ssn varchar not null,
-    address_no smallint unique not null,
+    address_no smallint not null,
 	order_date date not null,
 	order_state smallint not null,
 	constraint order_address_fk foreign key (ssn, address_no) references address (ssn, address_no)

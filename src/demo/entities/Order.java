@@ -1,36 +1,50 @@
 package demo.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+@Table(name="\"order\"")
 @Entity
 public class Order {
     @Id
-    @GeneratedValue
     @Column(name = "order_id")
-    private Integer id;
+    @GeneratedValue
+    private Short id;
 
 
     @ManyToOne()
     @JoinColumns({
-            @JoinColumn(name = "ssn"),
-            @JoinColumn(name = "address_no")
+            @JoinColumn(name = "id.ssn"),
+            @JoinColumn(name = "id.address_id")
     })
     private Address address;
 
-    @OneToMany(mappedBy = "id.order")
+    @OneToMany(mappedBy = "id.order", cascade = CascadeType.PERSIST)
     private List<OrderItem> items = new ArrayList<OrderItem>();
 
-    private Date orderDate;
-    private Short orderState;
+    private LocalDate orderDate;
+    private Integer orderState;
 
-    public void setId(Integer id) {
+    public Order(Address address, LocalDate orderDate, Integer orderState) {
+        this.address = address;
+        this.orderDate = orderDate;
+        this.orderState = orderState;
+    }
+
+    public Order() {
+    }
+
+    public void addProduct(Product product, Integer amount) {
+        items.add(new OrderItem(this, product, amount));
+    }
+
+    public void setId(Short id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Short getId() {
         return id;
     }
 
@@ -42,19 +56,27 @@ public class Order {
         this.address = address;
     }
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Short getOrderState() {
+    public Integer getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(Short orderState) {
+    public void setOrderState(Integer orderState) {
         this.orderState = orderState;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
     }
 }
