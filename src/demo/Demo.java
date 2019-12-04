@@ -32,6 +32,10 @@ public class Demo {
         Query awesomePeoples = em.createQuery("select new demo.dto.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
         List<AwesomePeopleCount> res2 = awesomePeoples.getResultList();
 
+        Query orderSummaries = em.createQuery("select p.firstName from Person p join p.addresses a join Order o on o.address.id.person p");
+        // join Order o on a.id.id = o.address.id.id join OrderItem oi join Product p
+        System.out.println(orderSummaries.getSingleResult());
+
         em.close();
         factory.close();
 
@@ -106,7 +110,7 @@ public class Demo {
         Address address = (Address) query.getSingleResult();
 
         // Insert orders to set their state to make them "Managed" objects
-        // Need to be persisted before order because id would be the same.
+        // Need to be persisted before order because id would not be generated.
         em.getTransaction().begin();
         Product product1 = new Product("Coffe", 2.0);
         Product product2 = new Product("Tea", .75);

@@ -4,15 +4,21 @@ public class OrderSummary {
     //region Fields
     private int count;
     private double cost;
+    private String firstName;
+    private String lastName;
     private String city;
     private String country;
     private String street;
     //endregion
 
     //region Constructors
-    public OrderSummary(int count, double cost, String city, String country, String street) {
+
+
+    public OrderSummary(int count, double cost, String firstName, String lastName, String city, String country, String street) {
         this.count = count;
         this.cost = cost;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.city = city;
         this.country = country;
         this.street = street;
@@ -37,6 +43,22 @@ public class OrderSummary {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getCity() {

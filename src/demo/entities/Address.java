@@ -67,6 +67,15 @@ public class Address implements Serializable
     public void setStreetNumber(int streetNumber) {
         this.streetNumber = streetNumber;
     }
+
+    public AddressId getId() {
+        return id;
+    }
+
+    public void setId(AddressId id) {
+        this.id = id;
+    }
+
     //endregion
 }
 
