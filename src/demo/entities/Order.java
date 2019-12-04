@@ -1,5 +1,7 @@
 package demo.entities;
 
+import org.ietf.jgss.GSSName;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ public class Order {
     @Column(name = "order_id", nullable = false)
     @GeneratedValue
     private int id;
+
+    @ManyToOne()
+    @JoinColumn(name = "ssn", insertable = false, updatable = false)
+    private Person person;
 
     @ManyToOne()
     @JoinColumns({
@@ -32,6 +38,7 @@ public class Order {
     //region Constructors
     public Order(Address address, LocalDate orderDate, Integer orderState) {
         this.address = address;
+        this.person = address.getId().getPerson();
         this.orderDate = orderDate;
         this.orderState = orderState;
     }
