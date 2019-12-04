@@ -22,49 +22,60 @@ public class Demo {
         insertAwesomePerson(em);
         insertAddress(em);
         insertOrders(em);
-        // fetch Data
-        Query query = em.createQuery("select p from Person p");
-        List<Person> result = query.getResultList();
 
-        Query awesomeCities = em.createQuery("select distinct a.city from Person p join p.addresses a where p.isAwesome = true order by a.city asc");
-        List<String> res1 = awesomeCities.getResultList();
-
-        Query awesomePeoples = em.createQuery("select new demo.dto.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
-        List<AwesomePeopleCount> res2 = awesomePeoples.getResultList();
-
-        Query orderSummaries = em.createQuery("select 'Shipping ' || sum(oi.amount) || ' pieces (total cost: ' || sum (oi.amount * pr.price) || ') to ' || p.firstName || ' ' || p.lastName || ' at ' || a.country || ' ' || a.city || ' ' || a.street from Person p join p.addresses a join Order o on p = o.person join o.items oi join oi.id.product pr group by o, p, a");
-        // join Order o on a.id.id = o.address.id.id join OrderItem oi join Product p
-        List<String> res3 = orderSummaries.getResultList();
-
-        em.close();
-        factory.close();
-
-        // print Data
+        // Test Queries
         System.out.println("\u001B[34m");
 
+        List<Person> persons = getPersons(em);
+        List<String> awesomeCities = getAwesomeCities(em);
+        List<AwesomePeopleCount> awesomePeopleCounts = getAwesomePeopleCounts(em);
+        List<String> orderSummaries = getOrderSummaries(em);
+
         System.out.println("Persons:");
-        for (Person p : result) {
+        for (Person p : persons) {
             System.out.println(p.getSSN() + ": " + p.getFirstName() + " " + p.getLastName());
         }
         System.out.println();
 
         System.out.println("Awesome Cities:");
-        for (String c : res1) {
+        for (String c : awesomeCities) {
             System.out.println("\t--> " + c);
         }
         System.out.println();
 
         System.out.println("Awesomeness Count:");
-        System.out.println("In total there are " + res2.get(0).getCount() + " awesome and " + res2.get(1).getCount() + " not awesome people");
+        System.out.println("In total there are " + awesomePeopleCounts.get(0).getCount() + " awesome and " + awesomePeopleCounts.get(1).getCount() + " not awesome people");
 
         System.out.println();
 
-        for (String c : res3){
+        for (String c : orderSummaries){
             System.out.println(c);
         }
 
         System.out.println("\u001B[0m");
 
+        em.close();
+        factory.close();
+    }
+
+    public static List<String> getOrderSummaries(EntityManager em){
+        Query orderSummaries = em.createQuery("select 'Shipping ' || sum(oi.amount) || ' pieces (total cost: ' || sum (oi.amount * pr.price) || ') to ' || p.firstName || ' ' || p.lastName || ' at ' || a.country || ' ' || a.city || ' ' || a.street || ' ' || a.streetNumber from Person p join p.addresses a join Order o on p = o.person join o.items oi join oi.id.product pr group by o, p, a");
+        return orderSummaries.getResultList();
+    }
+
+    public static List<AwesomePeopleCount> getAwesomePeopleCounts(EntityManager em){
+        Query awesomePeoples = em.createQuery("select new demo.dto.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
+        return awesomePeoples.getResultList();
+    }
+
+    public static List<String> getAwesomeCities(EntityManager em){
+        Query awesomeCities = em.createQuery("select distinct a.city from Person p join p.addresses a where p.isAwesome = true order by a.city asc");
+        return awesomeCities.getResultList();
+    }
+
+    public static List<Person> getPersons(EntityManager em){
+        Query query = em.createQuery("select p from Person p");
+        return query.getResultList();
     }
 
     private static void insertPerson(EntityManager em) {

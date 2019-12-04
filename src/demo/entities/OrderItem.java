@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class OrderItem {
 
     //region Fields
-    @Id
+    @EmbeddedId
     private OrderItemId id;
 
     private Integer amount;

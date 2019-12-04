@@ -60,6 +60,7 @@ create table first_steps.order
     address_no  smallint not null,
     order_date  date     not null,
     order_state smallint not null,
+    constraint order_person_fk foreign key (ssn) references person,
     constraint order_address_fk foreign key (ssn, address_no) references address (ssn, address_no)
 );
 
