@@ -32,9 +32,9 @@ public class Demo {
         Query awesomePeoples = em.createQuery("select new demo.dto.AwesomePeopleCount(p.isAwesome, count(p.SSN)) from Person p group by p.isAwesome order by p.isAwesome desc");
         List<AwesomePeopleCount> res2 = awesomePeoples.getResultList();
 
-        Query orderSummaries = em.createQuery("select p.firstName from Person p join p.addresses a join Order o on o.address.id.person p");
+        Query orderSummaries = em.createQuery("select 'Shipping ' || sum(oi.amount) || ' pieces (total cost: ' || sum (oi.amount * pr.price) || ') to ' || p.firstName || ' ' || p.lastName || ' at ' || a.country || ' ' || a.city || ' ' || a.street from Person p join p.addresses a join Order o on p = o.person join o.items oi join oi.id.product pr group by o, p, a");
         // join Order o on a.id.id = o.address.id.id join OrderItem oi join Product p
-        System.out.println(orderSummaries.getSingleResult());
+        List<String> res3 = orderSummaries.getResultList();
 
         em.close();
         factory.close();
@@ -56,6 +56,13 @@ public class Demo {
 
         System.out.println("Awesomeness Count:");
         System.out.println("In total there are " + res2.get(0).getCount() + " awesome and " + res2.get(1).getCount() + " not awesome people");
+
+        System.out.println();
+
+        for (String c : res3){
+            System.out.println(c);
+        }
+
         System.out.println("\u001B[0m");
 
     }
